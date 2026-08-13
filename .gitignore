@@ -1,0 +1,47 @@
+# Ambiente virtual
+.venv/
+venv/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Logs
+logs/
+*.log
+
+# Configurações locais
+config/
+
+# Relatórios e planilhas geradas
+relatorios/
+*.xlsx
+
+# PyInstaller
+build/
+dist/
+*.spec
+
+# Releases e instaladores compilados
+release/
+installer_output/
+*.exe
+
+# Arquivos gerados pelo build
+build_config/version_info.txt
+installer/Automacao_ITI.iss
+
+# IDE
+.vscode/
+.idea/
+
+# Windows
+Thumbs.db
+Desktop.ini
+
+# macOS
+.DS_Store
+
+# Arquivos de teste temporários
+teste.py

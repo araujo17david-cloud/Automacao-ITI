@@ -1,0 +1,7 @@
+COR_FUNDO = "#F4F6F9"
+COR_BOTAO = "#0A84FF"
+COR_TEXTO = "#1E1E1E"
+
+FONTE_TITULO = ("Segoe UI", 28, "bold")
+FONTE_NORMAL = ("Segoe UI", 14)
+FONTE_BOTAO = ("Segoe UI", 14, "bold")
