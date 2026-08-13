@@ -1,5 +1,7 @@
 import os
 
+from datetime import datetime
+
 import customtkinter as ctk
 
 
@@ -10,7 +12,6 @@ class HistoricoCard(ctk.CTkFrame):
         master,
         arquivo
     ):
-
         super().__init__(
             master,
             corner_radius=10,
@@ -21,14 +22,15 @@ class HistoricoCard(ctk.CTkFrame):
 
         self.arquivo = arquivo
 
-        # -----------------------------
-        # Nome do arquivo
-        # -----------------------------
+        # ==================================
+        # NOME DO ARQUIVO
+        # ==================================
 
         ctk.CTkLabel(
             self,
-            text=f"📄 {arquivo.name}",
+            text=f"📄  {arquivo.name}",
             font=("Segoe UI", 14, "bold"),
+            text_color="#1D2939",
             anchor="w"
         ).pack(
             fill="x",
@@ -36,21 +38,21 @@ class HistoricoCard(ctk.CTkFrame):
             pady=(15, 5)
         )
 
-        # -----------------------------
-        # Data
-        # -----------------------------
-
-        from datetime import datetime
+        # ==================================
+        # DATA DE MODIFICAÇÃO
+        # ==================================
 
         data = datetime.fromtimestamp(
             arquivo.stat().st_mtime
         )
 
+        texto_data = data.strftime(
+            "%d/%m/%Y às %H:%M"
+        )
+
         ctk.CTkLabel(
             self,
-            text=data.strftime(
-                "%d/%m/%Y %H:%M"
-            ),
+            text=f"Gerado em: {texto_data}",
             font=("Segoe UI", 11),
             text_color="#667085"
         ).pack(
@@ -58,52 +60,96 @@ class HistoricoCard(ctk.CTkFrame):
             padx=18
         )
 
-        # -----------------------------
-        # Botões
-        # -----------------------------
+        # ==================================
+        # TAMANHO
+        # ==================================
 
-        area = ctk.CTkFrame(
+        tamanho_mb = (
+            arquivo.stat().st_size
+            / 1024
+            / 1024
+        )
+
+        tamanho_formatado = (
+            f"{tamanho_mb:.2f}"
+            .replace(".", ",")
+        )
+
+        ctk.CTkLabel(
+            self,
+            text=f"Tamanho: {tamanho_formatado} MB",
+            font=("Segoe UI", 11),
+            text_color="#667085"
+        ).pack(
+            anchor="w",
+            padx=18,
+            pady=(3, 0)
+        )
+
+        # ==================================
+        # BOTÕES
+        # ==================================
+
+        area_botoes = ctk.CTkFrame(
             self,
             fg_color="transparent"
         )
 
-        area.pack(
+        area_botoes.pack(
             fill="x",
             padx=18,
             pady=(12, 15)
         )
 
-        ctk.CTkButton(
-            area,
+        botao_abrir = ctk.CTkButton(
+            area_botoes,
             text="Abrir",
-            width=100,
+            width=110,
+            height=34,
             fg_color="#1D6B47",
             hover_color="#24875A",
             command=self.abrir
-        ).pack(
+        )
+
+        botao_abrir.pack(
             side="left"
         )
 
-        ctk.CTkButton(
-            area,
-            text="Pasta",
-            width=100,
+        botao_pasta = ctk.CTkButton(
+            area_botoes,
+            text="Abrir pasta",
+            width=110,
+            height=34,
             fg_color="#475467",
             hover_color="#344054",
             command=self.abrir_pasta
-        ).pack(
+        )
+
+        botao_pasta.pack(
             side="left",
-            padx=8
+            padx=(8, 0)
         )
 
     def abrir(self):
+        try:
+            os.startfile(
+                str(self.arquivo)
+            )
 
-        os.startfile(
-            self.arquivo
-        )
+        except OSError as erro:
+            print(
+                "Não foi possível abrir "
+                f"o arquivo: {erro}"
+            )
 
     def abrir_pasta(self):
+        try:
+            os.startfile(
+                str(self.arquivo.parent)
+            )
 
-        os.startfile(
-            self.arquivo.parent
-        )
+        except OSError as erro:
+            print(
+                "Não foi possível abrir "
+                f"a pasta: {erro}"
+            )
